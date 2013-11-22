@@ -70,7 +70,7 @@ public class KMeansSolo {
             previous = current;
             current = getNextCentroids(previous);
             for (Point2D point : current) {
-                shouldContinue = shouldContinue && findClosestDistance(point, previous) < 0.0001;
+                shouldContinue = shouldContinue && findClosestDistance(point, previous) > 0.0001;
             }
         } while (shouldContinue);
         return current;
@@ -86,15 +86,19 @@ public class KMeansSolo {
     }
 
     public Point2D calcCenter(List<Point2D> points) {
+        Point2D result;
         double x, y;
         x = y = 0.0;
+        if (points == null || points.isEmpty()) {
+            return new Point2D(50.0, 50.0);
+        }
         for (Point2D point : points) {
             x += point.getX();
             y += point.getY();
         }
-        x /= points.size();
-        y /= points.size();
-        return new Point2D(x, y);
+
+        result = new Point2D(x / points.size(), y / points.size());
+        return result;
     }
 
     public static void main(String[] args) {
@@ -113,7 +117,7 @@ public class KMeansSolo {
 
         KMeansSolo kms = new KMeansSolo(3, points);
 
-        System.out.println(kms.calcCentroids());
+        System.out.println("Result = " + kms.calcCentroids());
 
     }
 
